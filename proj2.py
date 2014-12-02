@@ -1,5 +1,7 @@
 # grupo 001 Pedro Correia 81002 Rodrigo Rato 81500
 
+from random import random 
+
 #TAD Coordenada
 
 def cria_coordenada(x, y):
@@ -17,19 +19,19 @@ def coordenada_linha(coordenada):
 
 
 def coordenada_coluna(coordenada):
-    """Selector: recebe tipo coordenada e retorna inteiro correspondente a' linha"""
+    """Selector: recebe tipo coordenada e retorna inteiro correspondente a' coluna"""
     return coordenada[1]
 
 
 def e_coordenada(arg):
-    """Reconhecedor: recebe um argumento e retorna valor logico True se for uma coordenada"""
+    """Reconhecedor: recebe um argumento e retorna valor logico True se for uma coordenada e False em caso contrario"""
     return (isinstance(arg, tuple) and len(arg) == 2)  and \
            (isinstance(arg[0], int) and arg[0] in (1, 2, 3, 4)) and \
            (isinstance(arg[1], int) and arg[1] in (1, 2, 3, 4))  
 
 
 def coordenadas_iguais(c1, c2):
-    """Reconhecedor: recebe duas coordenadas e devolve o valor logico True se forem iguais"""
+    """Reconhecedor: recebe duas coordenadas e devolve o valor logico True se forem iguais e False em caso contrario"""
     return coordenada_linha(c1) == coordenada_linha(c2) and \
            coordenada_coluna(c1) == coordenada_coluna(c2)
 
@@ -54,13 +56,16 @@ def tabuleiro_pontuacao(tab):
     return tab[4]
 
 
-def pontuacao_valida(arg):
-    """Reconhcedor: recebe um argumento e retorna o valor logico True se for uma pontuacao valida"""
-    return isinstance(arg, int) and arg >= 0 and arg % 4 == 0
+def linha_para_lista_tabuleiro(tab, linha):
+        """Selector: recebe um tabuleiro e um numero correspondente a uma linha e devolve todos os valores da linha como uma lista"""
+        lista = []
+        for coluna in range(1, 5):
+            lista = lista + [tabuleiro_posicao(tab, cria_coordenada(linha, coluna))]
+        return lista
 
 
 def tabuleiro_posicoes_vazias(tab):
-    """Funcao que recebe um tabuleiro e devolve uma lista com as coordenadas onde existem elementos com o valor 0"""
+    """Selector: recebe um tabuleiro e devolve uma lista com as coordenadas onde existem elementos com o valor 0"""
     lista_coordenadas_vazias = []
     for linha in range(1, 5):
         for coluna in range(1, 5):
@@ -70,8 +75,33 @@ def tabuleiro_posicoes_vazias(tab):
     return lista_coordenadas_vazias
 
 
+def coluna_para_lista_tabuleiro(tab, coluna):
+    """Selector: recebe um tabuleiro e um numero correspondente a uma coluna e devolve todos os valores da coluna como uma lista"""      
+    lista = []
+    for linha in range(1, 5):
+        lista = lista + [tabuleiro_posicao(tab, cria_coordenada(linha, coluna))]
+    return lista    
+
+
+def pontuacao_valida(arg):
+    """Reconhecedor: recebe um argumento e retorna o valor logico True se for uma pontuacao valida e False em caso contrario"""
+    return isinstance(arg, int) and arg >= 0 and arg % 4 == 0
+
+
+def escreve_linha_tabuleiro(tab, linha, lista):
+    """Modificador: recebe um tabuleiro, um numero de uma linha e uma lista e substitui os elementos da linha pelos elementos da lista"""
+    for coluna in range(len(lista)):
+        tabuleiro_preenche_posicao(tab, cria_coordenada(linha, coluna + 1), lista[coluna])
+
+
+def escreve_coluna_tabuleiro(tab, coluna, lista):
+    """Modificador: recebe um tabuleiro, um numero de uma coluna e uma lista e substitui os elementos da coluna pelos elementos da lista"""
+    for linha in range(len(lista)):
+        tabuleiro_preenche_posicao(tab, cria_coordenada(linha + 1, coluna), lista[linha]) 
+
+
 def tabuleiro_preenche_posicao(tab, coord, num):
-    """Funcao que recebe um tabuleiro, uma coordenada e um numero e retorna o tabuleiro com o valor na coordenada igual ao numero"""
+    """Modificador: recebe um tabuleiro, uma coordenada e um numero e retorna o tabuleiro com o valor na coordenada igual ao numero"""
     if not e_coordenada(coord):
         raise ValueError("tabuleiro_preenche_posicao: argumentos invalidos")
     else:
@@ -80,7 +110,7 @@ def tabuleiro_preenche_posicao(tab, coord, num):
 
 
 def tabuleiro_actualiza_pontuacao(tab, numero):
-    """Funcao que recebe um tabuleiro e um numero e retorna o tabuleiro com o numero acrescentado a' pontuacao"""
+    """Modificador: recebe um tabuleiro e um numero e retorna o tabuleiro com o numero acrescentado a' pontuacao"""
     if not pontuacao_valida(numero):
         raise ValueError("tabuleiro_actualiza_pontuacao: argumentos invalidos")
     else:
@@ -89,39 +119,11 @@ def tabuleiro_actualiza_pontuacao(tab, numero):
 
 
 def tabuleiro_reduz(tab, jogada):
-    """Funcao que recebe um tabuleiro e uma jogada e retorna um novo tabuleiro alterado de acordo com a jogada"""
-    
-    def linha_para_lista_tabuleiro(tab, linha):
-        """Funcao que recebe um tabuleiro e um numero correspondente a uma linha e devolve todos os valores da linha como uma lista"""
-        lista = []
-        for coluna in range(1, 5):
-            lista = lista + [tabuleiro_posicao(tab, cria_coordenada(linha, coluna))]
-        return lista
-    
-    def coluna_para_lista_tabuleiro(tab, coluna):
-        """Funcao que recebe um tabuleiro e um numero correspondente a uma coluna e devolve todos os valores da coluna como uma lista"""      
-        lista = []
-        for linha in range(1, 5):
-            lista = lista + [tabuleiro_posicao(tab, cria_coordenada(linha, coluna))]
-        return lista    
-    
-    def escreve_linha_tabuleiro(tab, linha, lista):
-        #recebe um tabuleiro, um inteiro que corresponde a uma linha e uma lista
-        #escreve a lista nessa linha do tabuleiro
-        for coluna in range(len(lista)):
-            tabuleiro_preenche_posicao(tab, cria_coordenada(linha, coluna + 1), lista[coluna])
-    
-    def escreve_coluna_tabuleiro(tab, coluna, lista):
-        #recebe um tabuleiro, um inteiro que corresponde a uma coluna e uma lista
-        #escreve a lista nessa coluna do tabuleiro
-        for linha in range(len(lista)):
-            tabuleiro_preenche_posicao(tab, cria_coordenada(linha + 1, coluna), lista[linha])        
+    """Modificador: recebe um tabuleiro e uma jogada e retorna um novo tabuleiro alterado de acordo com a jogada"""
     
     def move_lista_dir(lista):
-        #Movimento a direita:
-        #recebe uma lista correspondente a uma linha ou coluna de um tabuleiro
-        #e faz a sua reducao. aplicada linha a linha ou coluna a coluna para
-        #reduzir a totalidade do tabuleiro
+        """Funcao que recebe uma lista e movimenta os elementos para a direita"""
+        
         def aux (lista,lista_aux):
             if lista==[]:
                 return lista_aux
@@ -129,13 +131,12 @@ def tabuleiro_reduz(tab, jogada):
                 return aux(lista[1:],[0]+lista_aux)
             else:
                 return aux(lista[1:],lista_aux+[lista[0]])
+            
         return aux (lista,[])
             
     def move_lista_esq(lista):
-        #Movimento a esquerda:
-        #recebe uma lista correspondente a uma linha ou coluna de um tabuleiro
-        #e faz a sua reducao. aplicada linha a linha ou coluna a coluna para
-        #reduzir a totalidade do tabuleiro        
+        """Funcao que recebe uma lista e movimenta os elementos para a esquerda"""
+        
         def aux (lista,lista_aux):
             if lista==[]:
                 return lista_aux
@@ -143,11 +144,11 @@ def tabuleiro_reduz(tab, jogada):
                 return aux(lista[:-1], lista_aux+[0])
             else:
                 return aux(lista[:-1],[lista[-1]]+lista_aux)
+            
         return aux (lista,[])
     
     def soma_lista_aux(lista, tab):
-        #Soma os elementos adjacentes de uma lista que representa
-        #ou uma linha ou uma coluna de um tabuleiro.
+        """Funcao que recebe uma lista e um tabuleiro e devolve a lista com os elementos adjacentes somados e actualiza a pontuacao do tabuleiro"""
         for elemento in range(len(lista) - 1):
             if lista[elemento] == lista[elemento + 1]:
                 tabuleiro_actualiza_pontuacao(tab, lista[elemento]*2)
@@ -156,30 +157,32 @@ def tabuleiro_reduz(tab, jogada):
         return lista
      
     def reduz_linhas_aux(tab, jogada):
+        """Funcao que recebe um tabuleiro e uma jogada e aplica essa jogada a cada linha do tabuleiro, actualizando a pontuacao"""
         if jogada == 'W':
             for linha in range(1, 5):
                 lista = linha_para_lista_tabuleiro(tab, linha)
                 lista = move_lista_esq(soma_lista_aux(move_lista_esq(lista), tab))
                 escreve_linha_tabuleiro(tab, linha, lista)
-        else:
+        else:                     #jogada == 'E'
             for linha in range(1, 5):
                 lista = linha_para_lista_tabuleiro(tab, linha)
                 lista = move_lista_dir(soma_lista_aux(move_lista_dir(lista), tab))
                 escreve_linha_tabuleiro(tab, linha, lista)
     
     def reduz_colunas_aux(tab, jogada):
+        """Funcao que recebe um tabuleiro e uma jogada e aplica essa jogada a cada coluna do tabuleiro, actualizando a pontuacao"""
         if jogada == 'N':
             for coluna in range(1, 5):
                 lista = coluna_para_lista_tabuleiro(tab, coluna)
                 lista = move_lista_esq(soma_lista_aux(move_lista_esq(lista), tab))
                 escreve_coluna_tabuleiro(tab, coluna, lista)
-        else:
+        else:                   #jogada == 'S'
             for coluna in range(1, 5):
                 lista = coluna_para_lista_tabuleiro(tab, coluna)
                 lista = move_lista_dir(soma_lista_aux(move_lista_dir(lista), tab))
                 escreve_coluna_tabuleiro(tab, coluna, lista)        
    
-    if not jogada in ('N', 'S', 'W', 'E'):
+    if jogada not in ('N', 'S', 'W', 'E'):
         raise ValueError("tabuleiro_reduz: argumentos invalidos")
     elif jogada == 'N' or jogada == 'S':
         reduz_colunas_aux(tab, jogada)
@@ -190,7 +193,7 @@ def tabuleiro_reduz(tab, jogada):
 
 
 def e_tabuleiro(arg):
-    #nao verifica se os elementos sao potencias de 2
+    """Reconhecedor: recebe um argumento e retorna o valor logico True se for um tabuleiro e False em caso contrario"""
     return isinstance(arg, list) and len(arg) == 5 and \
            isinstance(arg[0], list) and len(arg[0]) == 4 and \
            isinstance(arg[1], list) and len(arg[1]) == 4 and \
@@ -198,40 +201,42 @@ def e_tabuleiro(arg):
            isinstance(arg[3], list) and len(arg[3]) == 4 and \
            pontuacao_valida(arg[4])
 
-def tabuleiro_terminado(tab):
-    return tabuleiro_posicoes_vazias(tab) == [] and \
-           not existem_movimentos(tab)
 
-#nao esta no enunciado
-def existem_movimentos(tab):
-    for linha in range(1, 5):
-        for coluna in range(1, 4):
-            if tabuleiro_posicao(tab, cria_coordenada(linha, coluna)) == \
-               tabuleiro_posicao(tab, cria_coordenada(linha, coluna + 1)):
-                return True
+def tabuleiro_terminado(tab):
+    """Reconhecedor: recebe um tabuleiro e retorna o valor logico True se o tabuleiro estiver cheio e nao existirem jogadas possiveis e False em caso contrario"""
     
-    for coluna in range(1, 5):
-        for linha in range(1, 4):
-            if tabuleiro_posicao(tab, cria_coordenada(linha, coluna)) == \
-                tabuleiro_posicao(tab, cria_coordenada(linha + 1, coluna)):
-                return True
-            
-    return False
-#documentar /\
+    def existem_movimentos(tab):
+        for linha in range(1, 5):
+            for coluna in range(1, 4):
+                if tabuleiro_posicao(tab, cria_coordenada(linha, coluna)) == \
+                   tabuleiro_posicao(tab, cria_coordenada(linha, coluna + 1)):
+                    return True
+        for coluna in range(1, 5):
+            for linha in range(1, 4):
+                if tabuleiro_posicao(tab, cria_coordenada(linha, coluna)) == \
+                   tabuleiro_posicao(tab, cria_coordenada(linha + 1, coluna)):
+                    return True
+        return False 
+ 
+    return tabuleiro_posicoes_vazias(tab) == [] and not existem_movimentos(tab)
+
 
 def tabuleiros_iguais(t1, t2):
+    """Teste: recebe dois tabuleiros e retorna True se forem iguais e False em caso contrario"""
     if tabuleiro_pontuacao(t1) != tabuleiro_pontuacao(t2):
         return False
-        
-    for linha in range(1, 5):
-        for coluna in range(1, 5):
-            if tabuleiro_posicao(t1, cria_coordenada(linha, coluna)) != \
-               tabuleiro_posicao(t2, cria_coordenada(linha, coluna)):
-                return False
-    return True
+    else:  
+        for linha in range(1, 5):
+            for coluna in range(1, 5):
+                if tabuleiro_posicao(t1, cria_coordenada(linha, coluna)) != \
+                   tabuleiro_posicao(t2, cria_coordenada(linha, coluna)):
+                    return False
+        return True
+
 
 def escreve_tabuleiro(tabuleiro):
-    if not e_tabuleiro(tabuleiro):  #verifica validade do tabuleiro
+    """Funcao que recebe um tabuleiro e escreve no ecra a representacao externa"""
+    if not e_tabuleiro(tabuleiro): 
         raise ValueError("escreve_tabuleiro: argumentos invalidos")
     
     linha_a_escrever = ""
@@ -246,30 +251,39 @@ def escreve_tabuleiro(tabuleiro):
 
 def pede_jogada():
     """Funcao sem parametros que pergunta ao jogador a direcao (N,S,E,W)"""
-    a=input("Introduza uma jogada (N, S, E, W): ")
-    if direcao not in ('N', 'S', 'W', 'E'):
+    direcao=input("Introduza uma jogada (N, S, E, W): ")
+    while direcao not in ('N', 'S', 'W', 'E'):
         print("Jogada invalida.")
-        return pede_jogada()
-    else:
-        return direcao
+        direcao=input("Introduza uma jogada (N, S, E, W): ")
+    return direcao
 
 
 def jogo_2048():
-    tab=cria_tabuleiro
-    escreve_tabuleiro(tab)
-    jogada=pede_jogada
-    escreve_tabuleiro(tabuleiro_reduz(tab,jogada))
+    """Funcao principal que permite jogar 2048"""
+       
+    def preenche_posicao_aleatoria(tab):
+        if not len(tabuleiro_posicoes_vazias(tab)) == 0:    #Se ainda houver uma posicao vazia, preenchemo-la
+            randCoord=tabuleiro_posicoes_vazias(tab)[int(random() * (len(tabuleiro_posicoes_vazias(tab)) - 1))] 
+            if random() < 0.8:
+                randNum=2
+            else:
+                randNum=4
+            tabuleiro_preenche_posicao(tab,randCoord,randNum)    
+        
+    #comeca o jogo    
+    tab=cria_tabuleiro()
+    while not tabuleiro_terminado(tab):
+            preenche_posicao_aleatoria(tab)     #geramos uma peca ao calhas e escrevemo-la no tabuleiro
+            escreve_tabuleiro(tab)                      #escrevemos a representacao externa do tabuleiro no ecra
+            jogada=pede_jogada()                     #pedimos a jogada ao utilizador e finalmente:
+            tab = tabuleiro_reduz(tab, jogada)  #reduzimos o tabuleiro com a jogada dada
+            
+    print("Jogo acabou, a sua pontuacao é de : ", tabuleiro_pontuacao(tab))
     
-    def copia_tabuleiro(tabuleiro):
-        return copiaTabuleiro
     
-    def preenche_posicao_aleatoria(tabuleiro):
-        return shit
+   
     
-    if tabuleiro_terminado(tab):
-        print("Jogo acabou, a sua pontuacao é de : ", tabuleiro_pontuacao(tab))
-    else:
-        return
+    
 
 t1 = [[1, 2, 4, 8], \
       [16, 32, 64, 128], \
