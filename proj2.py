@@ -39,7 +39,7 @@ def coordenadas_iguais(c1, c2):
 #TAD Tabuleiro
 
 def cria_tabuleiro():
-    """Construtor: nao recebe argumentos e retorna um elemento do tipo tabuleiro com todas as posições com o valor 0 e pontuacao 0"""
+    """Construtor: nao recebe argumentos e retorna um elemento do tipo tabuleiro com todas as posicoes com o valor 0 e pontuacao 0"""
     return [[0, 0, 0, 0] , [0, 0, 0, 0] , [0, 0, 0, 0] , [0, 0, 0, 0] , 0]
 
 
@@ -278,7 +278,7 @@ def jogo_2048():
             jogada=pede_jogada()                     #pedimos a jogada ao utilizador e finalmente:
             tab = tabuleiro_reduz(tab, jogada)  #reduzimos o tabuleiro com a jogada dada
             
-    print("Jogo acabou, a sua pontuacao é de : ", tabuleiro_pontuacao(tab))
+    print("Jogo acabou, a sua pontuacao e de : ", tabuleiro_pontuacao(tab))
     
     
    
