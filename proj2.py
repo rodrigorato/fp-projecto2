@@ -158,7 +158,7 @@ def tabuleiro_reduz(tab, jogada):
     
     def soma_lista_aux_S_E(lista, tab):
             """Funcao que recebe uma lista e um tabuleiro e devolve a lista com os elementos adjacentes somados e actualiza a pontuacao do tabuleiro"""
-            for elemento in range(len(lista) - 2, -1, -1):
+            for elemento in range(len(lista) - 1, -1, -1):  #coisas
                 if lista[elemento] == lista[elemento - 1]:
                     tabuleiro_actualiza_pontuacao(tab, lista[elemento]*2)
                     lista[elemento] = lista[elemento] * 2
@@ -170,7 +170,7 @@ def tabuleiro_reduz(tab, jogada):
         if jogada == 'W':
             for linha in range(1, 5):
                 lista = linha_para_lista_tabuleiro(tab, linha)
-                lista = move_lista_esq(soma_lista_N_W(move_lista_esq(lista), tab))
+                lista = move_lista_esq(soma_lista_aux_N_W(move_lista_esq(lista), tab))
                 escreve_linha_tabuleiro(tab, linha, lista)
         else:                     #jogada == 'E'
             for linha in range(1, 5):
