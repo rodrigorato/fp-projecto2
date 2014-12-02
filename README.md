@@ -1,4 +1,4 @@
-fp-projecto2
-============
+fp-projeto2
+===========
 
-2048 in Python.
+Repositório para o segundo projecto da cadeira de FP no IST (Semestre 1 - 2014/2015)
