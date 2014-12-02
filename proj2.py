@@ -102,7 +102,7 @@ def escreve_coluna_tabuleiro(tab, coluna, lista):
 
 def tabuleiro_preenche_posicao(tab, coord, num):
     """Modificador: recebe um tabuleiro, uma coordenada e um numero e retorna o tabuleiro com o valor na coordenada igual ao numero"""
-    if not e_coordenada(coord):
+    if (not e_coordenada(coord)) or (not isinstance(num, int)):
         raise ValueError("tabuleiro_preenche_posicao: argumentos invalidos")
     else:
         tab[coordenada_linha(coord) - 1][coordenada_coluna(coord) - 1] = num
