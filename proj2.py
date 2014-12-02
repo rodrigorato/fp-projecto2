@@ -158,8 +158,8 @@ def tabuleiro_reduz(tab, jogada):
     
     def soma_lista_aux_S_E(lista, tab):
             """Funcao que recebe uma lista e um tabuleiro e devolve a lista com os elementos adjacentes somados e actualiza a pontuacao do tabuleiro"""
-            for elemento in range(len(lista) - 2, -1, -1):  #coisas
-                if lista[elemento + 1] == lista[elemento]:
+            for elemento in range(len(lista) - 2, -1, -1):
+                if lista[elemento] == lista[elemento + 1]:
                     tabuleiro_actualiza_pontuacao(tab, lista[elemento]*2)
                     lista[elemento + 1] = lista[elemento + 1] * 2
                     lista[elemento] = 0
@@ -256,7 +256,9 @@ def escreve_tabuleiro(tabuleiro):
         print(linha_a_escrever)
         linha_a_escrever = ""
     
-    print("Pontuacao: " + str(tabuleiro_pontuacao(tabuleiro))) 
+    print("Pontuacao:", tabuleiro_pontuacao(tabuleiro)) 
+
+#Jogo
 
 def pede_jogada():
     """Funcao sem parametros que pergunta ao jogador a direcao (N,S,E,W)"""
@@ -283,8 +285,9 @@ def jogo_2048():
     tab=cria_tabuleiro()
     while not tabuleiro_terminado(tab):
             preenche_posicao_aleatoria(tab)     #geramos uma peca ao calhas e escrevemo-la no tabuleiro
-            escreve_tabuleiro(tab)                      #escrevemos a representacao externa do tabuleiro no ecra
-            jogada=pede_jogada()                     #pedimos a jogada ao utilizador e finalmente:
+            escreve_tabuleiro(tab)              #escrevemos a representacao externa do tabuleiro no ecra
+            jogada=pede_jogada()                #pedimos a jogada ao utilizador e finalmente:
             tab = tabuleiro_reduz(tab, jogada)  #reduzimos o tabuleiro com a jogada dada
+    #jogo acabou
             
-    print("Jogo acabou, a sua pontuacao e de : ", tabuleiro_pontuacao(tab))
+    print("Jogo acabou, a sua pontuacao e de :", tabuleiro_pontuacao(tab))
