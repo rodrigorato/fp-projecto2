@@ -147,26 +147,35 @@ def tabuleiro_reduz(tab, jogada):
             
         return aux (lista,[])
     
-    def soma_lista_aux(lista, tab):
-        """Funcao que recebe uma lista e um tabuleiro e devolve a lista com os elementos adjacentes somados e actualiza a pontuacao do tabuleiro"""
+    def soma_lista_aux_cima_e_esq(lista, tab):
+        """Funcao que recebe uma lista e um tabuleiro e devolve a lista com os elementos adjacentes somados (para jogadas N e W) e actualiza a pontuacao do tabuleiro"""
         for elemento in range(len(lista) - 1):
             if lista[elemento] == lista[elemento + 1]:
                 tabuleiro_actualiza_pontuacao(tab, lista[elemento]*2)
                 lista[elemento] = lista[elemento] * 2
                 lista[elemento + 1] = 0
         return lista
+    
+    def soma_lista_aux_baixo_e_dir(lista, tab):
+            """Funcao que recebe uma lista e um tabuleiro e devolve a lista com os elementos adjacentes somados (para jogadas S e E) e actualiza a pontuacao do tabuleiro"""
+            for elemento in range(len(lista) - 1):
+                if lista[elemento] == lista[elemento + 1]:
+                    tabuleiro_actualiza_pontuacao(tab, lista[elemento]*2)
+                    lista[elemento + 1] = lista[elemento] * 2
+                    lista[elemento] = 0
+            return lista    
      
     def reduz_linhas_aux(tab, jogada):
         """Funcao que recebe um tabuleiro e uma jogada e aplica essa jogada a cada linha do tabuleiro, actualizando a pontuacao"""
         if jogada == 'W':
             for linha in range(1, 5):
                 lista = linha_para_lista_tabuleiro(tab, linha)
-                lista = move_lista_esq(soma_lista_aux(move_lista_esq(lista), tab))
+                lista = move_lista_esq(soma_lista_aux_cima_e_esq(move_lista_esq(lista), tab))
                 escreve_linha_tabuleiro(tab, linha, lista)
         else:                     #jogada == 'E'
             for linha in range(1, 5):
                 lista = linha_para_lista_tabuleiro(tab, linha)
-                lista = move_lista_dir(soma_lista_aux(move_lista_dir(lista), tab))
+                lista = move_lista_dir(soma_lista_aux_baixo_e_dir(move_lista_dir(lista), tab))
                 escreve_linha_tabuleiro(tab, linha, lista)
     
     def reduz_colunas_aux(tab, jogada):
@@ -174,12 +183,12 @@ def tabuleiro_reduz(tab, jogada):
         if jogada == 'N':
             for coluna in range(1, 5):
                 lista = coluna_para_lista_tabuleiro(tab, coluna)
-                lista = move_lista_esq(soma_lista_aux(move_lista_esq(lista), tab))
+                lista = move_lista_esq(soma_lista_aux_cima_e_esq(move_lista_esq(lista), tab))
                 escreve_coluna_tabuleiro(tab, coluna, lista)
         else:                   #jogada == 'S'
             for coluna in range(1, 5):
                 lista = coluna_para_lista_tabuleiro(tab, coluna)
-                lista = move_lista_dir(soma_lista_aux(move_lista_dir(lista), tab))
+                lista = move_lista_dir(soma_lista_aux_baixo_e_dir(move_lista_dir(lista), tab))
                 escreve_coluna_tabuleiro(tab, coluna, lista)        
    
     if jogada not in ('N', 'S', 'W', 'E'):
@@ -279,26 +288,3 @@ def jogo_2048():
             tab = tabuleiro_reduz(tab, jogada)  #reduzimos o tabuleiro com a jogada dada
             
     print("Jogo acabou, a sua pontuacao e de : ", tabuleiro_pontuacao(tab))
-    
-    
-   
-    
-    
-
-t1 = [[1, 2, 4, 8], \
-      [16, 32, 64, 128], \
-      [256, 512, 1024, 2048], \
-      [4096, 8192, 16384, 32768], 0]
-
-t2 = [[2, 2, 0, 0], \
-      [2, 0, 2, 0], \
-      [2, 0, 0, 2], \
-      [0, 0, 2, 2], \
-      0]
-        
-t3 = [[4, 4, 2, 2], \
-      [4, 4, 4, 4], \
-      [2, 0, 0, 2], \
-      [0, 0, 2, 2], \
-      0]
-
