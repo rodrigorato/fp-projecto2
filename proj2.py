@@ -1,4 +1,4 @@
-# grupo 001 Pedro Correia 81002 Rodrigo Rato 81500
+# Grupo 001 - Pedro Correia 81002 - Rodrigo Rato 81500
 
 from random import random 
 
