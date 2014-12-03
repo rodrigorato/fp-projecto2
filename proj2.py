@@ -213,19 +213,14 @@ def e_tabuleiro(arg):
 
 def tabuleiro_terminado(tab):
     """Reconhecedor: recebe um tabuleiro e retorna o valor logico True se o tabuleiro estiver cheio e nao existirem jogadas possiveis e False em caso contrario"""
-    
+        
     def existem_movimentos(tab):
-        for linha in range(1, 5):
-            for coluna in range(1, 4):
-                if tabuleiro_posicao(tab, cria_coordenada(linha, coluna)) == \
-                   tabuleiro_posicao(tab, cria_coordenada(linha, coluna + 1)):
-                    return True
-        for coluna in range(1, 5):
-            for linha in range(1, 4):
-                if tabuleiro_posicao(tab, cria_coordenada(linha, coluna)) == \
-                   tabuleiro_posicao(tab, cria_coordenada(linha + 1, coluna)):
-                    return True
-        return False 
+        for jogada in ('N', 'S', 'E', 'W'):
+            tab_depois_da_jogada = copia_tabuleiro(tab)
+            tab_depois_da_jogada = tabuleiro_reduz(tab_depois_da_jogada, jogada)
+            if not tabuleiros_iguais(tab, tab_depois_da_jogada):
+                return True
+        return False
  
     return tabuleiro_posicoes_vazias(tab) == [] and not existem_movimentos(tab)
 
@@ -257,6 +252,16 @@ def escreve_tabuleiro(tabuleiro):
         linha_a_escrever = ""
     
     print("Pontuacao:", tabuleiro_pontuacao(tabuleiro)) 
+
+
+def copia_tabuleiro(tab1):
+    """Funcao que recebe um tabuleiro e devolve uma copia desse tabuleiro."""
+    novo_tab = cria_tabuleiro()
+    tabuleiro_actualiza_pontuacao(novo_tab, tabuleiro_pontuacao(tab1))
+    for coord in tabuleiro_posicoes_vazias(cria_tabuleiro()): #obtemos todas as coordenadas validas para qualquer tabuleiro
+        tabuleiro_preenche_posicao(novo_tab, coord, \
+                                   tabuleiro_posicao(tab1, coord))
+    return novo_tab
 
 #Jogo
 
