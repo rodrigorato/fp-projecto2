@@ -88,14 +88,6 @@ def roda_tabuleiro(tab, num):
             escreve_coluna_tabuleiro(new_tab, coluna, lista)
             coluna=coluna-1     
         return roda_tabuleiro(new_tab, num-1)
-    
-
-def coluna_para_lista_tabuleiro(tab, coluna):
-    """Selector: recebe um tabuleiro e um numero correspondente a uma coluna e devolve todos os valores da coluna como uma lista"""      
-    lista = []
-    for linha in range(1, 5):
-        lista = lista + [tabuleiro_posicao(tab, cria_coordenada(linha, coluna))]
-    return lista    
 
 
 def pontuacao_valida(arg):
@@ -135,21 +127,22 @@ def tabuleiro_actualiza_pontuacao(tab, numero):
 
 def tabuleiro_reduz(tab, jogada):
     """Modificador: recebe um tabuleiro e uma jogada e retorna um novo tabuleiro alterado de acordo com a jogada"""
-    
-    def move_lista_dir(lista):
-        """Funcao que recebe uma lista e movimenta os elementos para a direita"""
-        
-        def aux (lista,lista_aux):
-            if lista==[]:
-                return lista_aux
-            elif lista[0]==0:
-                return aux(lista[1:],[0]+lista_aux)
-            else:
-                return aux(lista[1:],lista_aux+[lista[0]])
+   
+    def move_lista_esq(lista):
+            """Funcao que recebe uma lista e movimenta os elementos para a esquerda"""
             
-        return aux (lista,[])
+            def aux (lista,lista_aux):
+                if lista==[]:
+                    return lista_aux
+                elif lista[-1]==0:
+                    return aux(lista[:-1], lista_aux+[0])
+                else:
+                    return aux(lista[:-1],[lista[-1]]+lista_aux)
+                
+            return aux (lista,[])
     
-    def soma_lista_aux(lista, tab):
+        
+    def soma_lista_aux(lista,tab):
         """Funcao que recebe uma lista e um tabuleiro e devolve a lista com os elementos adjacentes somados e actualiza a pontuacao do tabuleiro"""
         for elemento in range(len(lista) - 1):
             if lista[elemento] == lista[elemento + 1]:
@@ -157,39 +150,32 @@ def tabuleiro_reduz(tab, jogada):
                 lista[elemento] = lista[elemento] * 2
                 lista[elemento + 1] = 0
         return lista
-    
-
-    def reduz_linhas_aux(tab, jogada):
-        """Funcao que recebe um tabuleiro e uma jogada e aplica essa jogada a cada linha do tabuleiro, actualizando a pontuacao"""
-        if jogada == 'W':
-            for linha in range(1, 5):
-                lista = linha_para_lista_tabuleiro(tab, linha)
-                lista = move_lista_esq(soma_lista_aux_N_W(move_lista_esq(lista), tab))
-                escreve_linha_tabuleiro(tab, linha, lista)
-        else:                     #jogada == 'E'
-            for linha in range(1, 5):
-                lista = linha_para_lista_tabuleiro(tab, linha)
-                lista = move_lista_dir(soma_lista_aux_S_E(move_lista_dir(lista), tab))
-                escreve_linha_tabuleiro(tab, linha, lista)
-    
+       
+    def aplica_jogada(tab):
+        for linha in range(1, 5):
+            lista = linha_para_lista_tabuleiro(tab, linha)
+            lista = move_lista_esq(soma_lista_aux(move_lista_esq(lista), tab))
+            escreve_linha_tabuleiro(tab, linha, lista)
+        return tab   
    
    
     if jogada not in ('N', 'S', 'W', 'E'):
         raise ValueError("tabuleiro_reduz: argumentos invalidos")
     elif jogada == 'N' :
-        roda_tabuleiro()
+        tab=roda_tabuleiro(tab,3)
+        tab=aplica_jogada(tab)
+        tab=roda_tabuleiro(tab,1)
     elif jogada == 'S':
-        
-    elif jogada == 'W':
-        
+        tab=roda_tabuleiro(tab,1)
+        tab=aplica_jogada(tab)
+        tab=roda_tabuleiro(tab,3)
     elif jogada == 'E':
-        new_tab=
-        for linha in range(1, 5):
-                        lista = linha_para_lista_tabuleiro(tab, linha)
-                        lista = move_lista_dir(soma_lista_aux_S_E(move_lista_dir(lista), tab))
-                        escreve_linha_tabuleiro(tab, linha, lista)            
+        tab=roda_tabuleiro(tab,2)
+        tab=aplica_jogada(tab)
+        tab=roda_tabuleiro(tab,2)
+    else:                     #jogada == 'W'
+        tab=aplica_jogada(tab)
     return tab
-
 
 
 def e_tabuleiro(arg):
@@ -287,7 +273,3 @@ def jogo_2048():
     #jogo acabou
             
     print("Jogo acabou, a sua pontuacao e de :", tabuleiro_pontuacao(tab))
-    
-    
-    
-tab1=[[1,2,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,16],4]
