@@ -5,7 +5,7 @@ from random import random
 #TAD Coordenada
 
 def cria_coordenada(x, y):
-    """Construtor: recebe int x, int y em que x e y sao inteiros entre 1 e 4 e devolve o tipo coordenada"""
+    """Construtor: recebe int x, int y em que x e y sao inteiros entre 1 e 4 e devolve um elemento do tipo coordenada"""
     if (isinstance(x, int) and x in (1, 2, 3, 4)) and \
        (isinstance(y, int) and y in (1, 2, 3, 4)):
         return (x, y) 
@@ -14,12 +14,12 @@ def cria_coordenada(x, y):
 
 
 def coordenada_linha(coordenada):
-    """Selector: recebe tipo coordenada e retorna inteiro correspondente a' linha"""
+    """Selector: recebe um elemento do tipo coordenada e retorna inteiro correspondente 'a linha"""
     return coordenada[0]
 
 
 def coordenada_coluna(coordenada):
-    """Selector: recebe tipo coordenada e retorna inteiro correspondente a' coluna"""
+    """Selector: recebe elemento do tipo coordenada e retorna inteiro correspondente 'a coluna"""
     return coordenada[1]
 
 
@@ -57,11 +57,11 @@ def tabuleiro_pontuacao(tab):
 
 
 def linha_para_lista_tabuleiro(tab, linha):
-        """Selector: recebe um tabuleiro e um numero correspondente a uma linha e devolve todos os valores da linha como uma lista"""
-        lista = []
-        for coluna in range(1, 5):
-            lista = lista + [tabuleiro_posicao(tab, cria_coordenada(linha, coluna))]
-        return lista
+    """Selector: recebe um tabuleiro e um numero correspondente a uma linha e devolve todos os valores da linha como uma lista"""
+    lista = []
+    for coluna in range(1, 5):
+        lista = lista + [tabuleiro_posicao(tab, cria_coordenada(linha, coluna))]
+    return lista
 
 
 def tabuleiro_posicoes_vazias(tab):
@@ -126,20 +126,18 @@ def tabuleiro_actualiza_pontuacao(tab, numero):
 
 
 def tabuleiro_reduz(tab, jogada):
-    """Modificador: recebe um tabuleiro e uma jogada e retorna um novo tabuleiro alterado de acordo com a jogada"""
+    """Modificador: recebe um tabuleiro e uma jogada e retorna um novo tabuleiro - o tabuleiro anterior alterado de acordo com a jogada"""
    
     def move_lista_esq(lista):
             """Funcao que recebe uma lista e movimenta os elementos para a esquerda"""
-            
-            def aux (lista,lista_aux):
+            def aux (lista, lista_aux):
                 if lista==[]:
                     return lista_aux
                 elif lista[-1]==0:
-                    return aux(lista[:-1], lista_aux+[0])
+                    return aux(lista[:-1], lista_aux + [0])
                 else:
-                    return aux(lista[:-1],[lista[-1]]+lista_aux)
-                
-            return aux (lista,[])
+                    return aux(lista[:-1], [lista[-1]] + lista_aux)
+            return aux (lista, [])
     
         
     def soma_lista_aux(lista,tab):
@@ -152,6 +150,7 @@ def tabuleiro_reduz(tab, jogada):
         return lista
        
     def aplica_jogada(tab):
+        """Funcao que recebe um tabuleiro e aplica um movimento para a esquerda (W), somando todos os elementos adjacentes"""
         for linha in range(1, 5):
             lista = linha_para_lista_tabuleiro(tab, linha)
             lista = move_lista_esq(soma_lista_aux(move_lista_esq(lista), tab))
@@ -173,7 +172,7 @@ def tabuleiro_reduz(tab, jogada):
         tab=roda_tabuleiro(tab,2)
         tab=aplica_jogada(tab)
         tab=roda_tabuleiro(tab,2)
-    else:                     #jogada == 'W'
+    else: #jogada == 'W'
         tab=aplica_jogada(tab)
     return tab
 
@@ -192,6 +191,7 @@ def tabuleiro_terminado(tab):
     """Reconhecedor: recebe um tabuleiro e retorna o valor logico True se o tabuleiro estiver cheio e nao existirem jogadas possiveis e False em caso contrario"""
         
     def existem_movimentos(tab):
+        """Funcao que verifica se sao possiveis movimentos no tabuleiro que recebe ao aplicar todos as jogadas possiveis a uma copia do tabuleiro inicial"""
         for jogada in ('N', 'S', 'E', 'W'):
             tab_depois_da_jogada = copia_tabuleiro(tab)
             tab_depois_da_jogada = tabuleiro_reduz(tab_depois_da_jogada, jogada)
@@ -265,7 +265,7 @@ def jogo_2048():
         
     #comeca o jogo    
     tab = cria_tabuleiro()
-    tab = preenche_posicao_aleatoria(tab)
+    tab = preenche_posicao_aleatoria(tab)             #para comecar com duas pecas em jogo
     while not tabuleiro_terminado(tab):
             tab = preenche_posicao_aleatoria(tab)     #geramos uma peca ao calhas e escrevemo-la no tabuleiro
             escreve_tabuleiro(tab)                    #escrevemos a representacao externa do tabuleiro no ecra
