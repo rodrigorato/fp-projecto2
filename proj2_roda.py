@@ -264,7 +264,8 @@ def jogo_2048():
             return tabuleiro_preenche_posicao(tab, randCoord, randNum)    
         
     #comeca o jogo    
-    tab=cria_tabuleiro()
+    tab = cria_tabuleiro()
+    tab = preenche_posicao_aleatoria(tab)
     while not tabuleiro_terminado(tab):
             tab = preenche_posicao_aleatoria(tab)     #geramos uma peca ao calhas e escrevemo-la no tabuleiro
             escreve_tabuleiro(tab)                    #escrevemos a representacao externa do tabuleiro no ecra
