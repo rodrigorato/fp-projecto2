@@ -256,20 +256,20 @@ def jogo_2048():
        
     def preenche_posicao_aleatoria(tab):
         if not len(tabuleiro_posicoes_vazias(tab)) == 0:    #Se ainda houver uma posicao vazia, preenchemo-la
-            randCoord=tabuleiro_posicoes_vazias(tab)[int(random() * (len(tabuleiro_posicoes_vazias(tab)) - 1))] 
+            randCoord = tabuleiro_posicoes_vazias(tab)[int(random() * (len(tabuleiro_posicoes_vazias(tab)) - 1))] 
             if random() < 0.8:
                 randNum=2
             else:
                 randNum=4
-            tabuleiro_preenche_posicao(tab,randCoord,randNum)    
+            return tabuleiro_preenche_posicao(tab, randCoord, randNum)    
         
     #comeca o jogo    
     tab=cria_tabuleiro()
     while not tabuleiro_terminado(tab):
-            preenche_posicao_aleatoria(tab)     #geramos uma peca ao calhas e escrevemo-la no tabuleiro
-            escreve_tabuleiro(tab)              #escrevemos a representacao externa do tabuleiro no ecra
-            jogada=pede_jogada()                #pedimos a jogada ao utilizador e finalmente:
-            tab = tabuleiro_reduz(tab, jogada)  #reduzimos o tabuleiro com a jogada dada
+            tab = preenche_posicao_aleatoria(tab)     #geramos uma peca ao calhas e escrevemo-la no tabuleiro
+            escreve_tabuleiro(tab)                    #escrevemos a representacao externa do tabuleiro no ecra
+            jogada = pede_jogada()                    #pedimos a jogada ao utilizador e finalmente:
+            tab = tabuleiro_reduz(tab, jogada)        #reduzimos o tabuleiro com a jogada dada
     #jogo acabou
             
     print("Jogo acabou, a sua pontuacao e de :", tabuleiro_pontuacao(tab))
