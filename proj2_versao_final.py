@@ -269,18 +269,18 @@ def jogo_2048():
             return tabuleiro_preenche_posicao(tab, randCoord, randNum)    
         
     #comeca o jogo    
-    tab = cria_tabuleiro()                                                               #inicializa-se o tabuleiro de jogo
+    tab = cria_tabuleiro()                                                       #inicializa-se o tabuleiro de jogo
     tabuleiro_anterior = cria_tabuleiro()                                        #e uma copia do mesmo
     tab = preenche_posicao_aleatoria(tab)             
     
     while not tabuleiro_terminado(tab):
         if  tabuleiros_iguais(tabuleiro_anterior, cria_tabuleiro()) or \
-            jogada_faz_algo(tabuleiro_anterior, jogada):                     #verifica se a jogada anterior alterou o tabuleiro - se nao alterou nao adicionamos outra peca
-            tab = preenche_posicao_aleatoria(tab)                             #geramos uma peca ao aleatoriamente e escrevemo-la no tabuleiro   
+            jogada_faz_algo(tabuleiro_anterior, jogada):                         #verifica se a jogada anterior alterou o tabuleiro - se nao alterou nao adicionamos outra peca
+            tab = preenche_posicao_aleatoria(tab)                                #geramos uma peca ao aleatoriamente e escrevemo-la no tabuleiro   
             
-        escreve_tabuleiro(tab)                                                          #escrevemos a representacao externa do tabuleiro no ecra
-        jogada = pede_jogada()                                                        #pedimos a jogada ao utilizador e finalmente:
-        tabuleiro_anterior = copia_tabuleiro(tab)                             #(guardamos uma copia do tabuleiro para a condicao acima)
+        escreve_tabuleiro(tab)                                                   #escrevemos a representacao externa do tabuleiro no ecra
+        jogada = pede_jogada()                                                   #pedimos a jogada ao utilizador e finalmente:
+        tabuleiro_anterior = copia_tabuleiro(tab)                                #(guardamos uma copia do tabuleiro para a condicao acima)
         tab = tabuleiro_reduz(tab, jogada)                                       #reduzimos o tabuleiro com a jogada dada
     
     #jogo acabou            
